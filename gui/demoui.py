@@ -1,15 +1,15 @@
 import sys
-from PyQt6.QtWidgets import *
-from PyQt6.QtGui import QPalette, QColor, QFont, QIcon, QPixmap
+import psycopg2
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QSizePolicy, QLabel, QListView, QPushButton, QHBoxLayout, QVBoxLayout
+from PyQt6.QtGui import QPalette, QColor, QFont, QIcon
 from PyQt6.QtCore import Qt, QStringListModel
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
-import numpy as np
+import matplotlib.dates as mdates
 import json
-import random
-
+from datetime import datetime
 
 class MatplotlibWidget(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=100):
@@ -21,16 +21,24 @@ class MatplotlibWidget(FigureCanvas):
 
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.updateGeometry()
-        # Apply dark theme to Matplotlib
-        self.plot()
+        
 
-    def plot(self):
-        x = np.linspace(0, 5, 100)
-        y = np.sin(x)
-        self.ax.plot(x, y)
-        self.ax.set_title("Matplotlib Example")
-        # Apply dark theme to Matplotlib
-        self.apply_dark_theme()
+
+    def plot(self, data):
+        self.ax.clear()
+        dates = [datetime.fromtimestamp(d[0] / 1000) for d in data]
+        opens = [d[1] for d in data]
+        highs = [d[2] for d in data]
+        lows = [d[3] for d in data]
+        closes = [d[4] for d in data]
+
+        self.ax.plot(dates, closes, label="Close Prices")
+        self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        self.ax.set_title("Price Chart")
+        self.ax.set_xlabel("Date")
+        self.ax.set_ylabel("Price")
+        self.ax.legend()
+        self.fig.autofmt_xdate()
 
         self.draw()
 
@@ -61,7 +69,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.central_widget)
 
         # Set window icon
-        self.setWindowIcon(QIcon("assets/img/icon.png"))
+        self.setWindowIcon(QIcon("../assets/img/icon.png"))
 
         # Matplotlib widget
         self.canvas = MatplotlibWidget(self.central_widget)
@@ -126,7 +134,7 @@ class MainWindow(QMainWindow):
 
         # Buttons
         self.button2 = QPushButton("Add Open Order", self.central_widget)
-        self.button2.clicked.connect(self.on_button2_clicked)
+        
 
         # Layout
         self.layout = QHBoxLayout(self.central_widget)
@@ -150,7 +158,7 @@ class MainWindow(QMainWindow):
 
         # Set window title
         self.setWindowTitle("Crypto Scan Basic Plan")
-        self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.WindowType.Window)
 
     def set_dark_theme(self):
         dark_palette = QPalette()
@@ -216,15 +224,30 @@ class MainWindow(QMainWindow):
             print(f"Error loading items from JSON: {e}")
             return []
 
-    def on_button2_clicked(self):
-        pass
+    def connect_to_database(self):
+        try:
+            return psycopg2.connect("postgresql://postgres:xderensa31@localhost:5432/crypto_scan_v2")
+        except Exception as e:
+            print(f"Veritabanı bağlantı hatası: {e}")
+            return None
 
     def on_list_item_double_clicked(self, index):
-        pass
-
+        coin_name = self.list_model.data(index).lower()
+        coin_table = f"_{coin_name}"
+        connection = self.connect_to_database()
+        if connection:
+            cursor = connection.cursor()
+            query = f"SELECT open_time, open, high, low, close FROM {coin_table}"
+            cursor.execute(query)
+            #son 100 veriyi çekiyoruz
+            data = cursor.fetchmany(100)
+            cursor.close()
+            connection.close()
+            self.canvas.plot(data)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_window = MainWindow()
     main_window.show()
     sys.exit(app.exec())
+
