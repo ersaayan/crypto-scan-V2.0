@@ -50,9 +50,11 @@ def main():
                     long_condition_true_in_last_4 = any(row.long_condition for row in rows)
                     if long_condition_true_in_last_4:
                         send_message(f"{coin} 'de LONG Sinyali Yakalandı Hemen Kontrol Et İşlem Gir")
+                        print(f"{coin} long")
             elif rows and rows[0].ca_sellSignal:
                 if rows and rows[0].shortTrend:
                     send_message(f"{coin} 'de SHORT Sinyali Yakalandı Hemen Kontrol Et İşlem Gir")
+                    print(f"{coin} short")
                         
 if __name__ == "__main__":
     main()
