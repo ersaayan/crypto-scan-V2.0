@@ -7,7 +7,9 @@ import time  # time modülünü içe aktarıyoruz
 
 client = Client()  # Binance API istemcisini oluşturuyoruz
 
-engine = create_engine("postgresql://postgres:xderensa31@localhost:5432/crypto_scan_v2")  # Postgresql veritabanına bağlantı oluşturuyoruz
+connection_string = "mssql+pyodbc://<ersaayan>:<Xderensa2531>@<crypto-scan.database.windows.net>/<crypto_scan>?driver=ODBC+Driver+17+for+SQL+Server"
+
+engine = create_engine(connection_string)  # Azure Sql Server'a bağlanıyoruz
 
 with open("crypto_list.json", "r") as f:  # crypto_list.json dosyasını okuma modunda açıyoruz
     coins = json.load(f)  # Dosyadan json verisini okuyoruz ve coins değişkenine atıyoruz
