@@ -7,8 +7,8 @@ from hull import calculate_hull
 from rsi import generate_signals
 
 # Veritabanı bağlantılarını yapılandır
-source_db_engine = create_engine('postgresql://postgres:xderensa31@localhost:5432/crypto_scan_v2')
-target_db_engine = create_engine('postgresql://postgres:xderensa31@localhost:5432/crypto_scan_results_with_indicators')
+source_db_engine = create_engine('postgresql://postgres:xderensa2531@localhost:5432/crypto_scan')
+target_db_engine = create_engine('postgresql://postgres:xderensa2531@localhost:5432/crypto_scan_indicators')
 
 def fetch_data(coin):
     # Veritabanından coin verilerini çekme işlemi
@@ -16,7 +16,7 @@ def fetch_data(coin):
 
 def apply_indicators(data):
     # İndikatörleri uygula ve sonuçları döndür
-    ca_signals = chandelier_exit(data, 1, 2, True)
+    ca_signals = chandelier_exit(data, 22, 3, True)
     hull_signal = calculate_hull(data, 55)
     rsi_signal = generate_signals(data, "close", 25, "SMA", 150, 2)
 

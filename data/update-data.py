@@ -7,7 +7,7 @@ import json
 
 client = Client()
 
-engine = create_engine("postgresql://postgres:xderensa31@localhost:5432/crypto_scan_v2")
+engine = create_engine("postgresql://postgres:xderensa2531@localhost:5432/crypto_scan")
 metadata = MetaData()
 
 with open("crypto_list.json", "r") as f:  # crypto_list.json dosyasını okuma modunda açıyoruz
