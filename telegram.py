@@ -4,7 +4,7 @@ import telebot
 
 
 bot = telebot.TeleBot("6266133436:AAEJa4yoCblgylIhsyYozyxdv5LLcHyRa20")
-chat_id = -4083613124
+chat_id = -1002109047403
 
 
 def send_message(message):
