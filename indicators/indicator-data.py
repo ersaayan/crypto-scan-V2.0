@@ -44,7 +44,7 @@ def main():
         elapsed_time = time.time() - start_time
         print(f"Döngü süresi: {elapsed_time} saniye")
         
-        time.sleep(60)  # 60 saniye bekle
+        time.sleep(10)  # 60 saniye bekle
 
 if __name__ == "__main__":
     main()
