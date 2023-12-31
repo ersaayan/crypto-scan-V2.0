@@ -7,8 +7,8 @@ from hull import calculate_hull
 from rsi import generate_signals
 
 # Veritabanı bağlantılarını yapılandır
-source_db_engine = create_engine('postgresql://postgres:xderensa2531@localhost:5432/crypto_scan')
-target_db_engine = create_engine('postgresql://postgres:xderensa2531@localhost:5432/crypto_scan_indicators')
+source_db_engine = create_engine('postgresql://postgres:xderensa31@localhost:5432/crypto_scan')
+target_db_engine = create_engine('postgresql://postgres:xderensa31@localhost:5432/crypto_scan_indicators')
 
 def fetch_data(coin):
     # Veritabanından coin verilerini çekme işlemi

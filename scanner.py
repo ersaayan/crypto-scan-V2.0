@@ -5,7 +5,7 @@ import pandas as pd
 from telegram import send_message
 
 
-engine = create_engine("postgresql://postgres:xderensa2531@localhost:5432/crypto_scan_indicators")
+
 
 with open("crypto_list.json", "r") as f:
     coins = json.load(f)
@@ -30,6 +30,9 @@ WELCOME TO CRYPTO SCAN V2.2
 def main():
     while True:
         for coin in coins:
+            
+            engine = create_engine("postgresql://postgres:xderensa31@localhost:5432/crypto_scan_indicators")
+            
             table_name = "_" + coin.lower() + "_indicators"
             # MetaData nesnesi oluştur
             metadata = MetaData()

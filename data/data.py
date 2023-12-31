@@ -7,7 +7,7 @@ import time  # time modülünü içe aktarıyoruz
 
 client = Client()  # Binance API istemcisini oluşturuyoruz
 
-engine = create_engine("postgresql://postgres:xderensa2531@localhost:5432/crypto_scan")  # Postgresql veritabanına bağlantı oluşturuyoruz
+engine = create_engine("postgresql://postgres:xderensa31@localhost:5432/crypto_scan")  # Postgresql veritabanına bağlantı oluşturuyoruz
 
 
 with open("crypto_list.json", "r") as f:  # crypto_list.json dosyasını okuma modunda açıyoruz
