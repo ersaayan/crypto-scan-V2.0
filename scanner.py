@@ -49,7 +49,7 @@ def main():
             last_signal_time = last_signal_times.get(coin, None)
 
             # Eğer son sinyalden 15 dakika geçtiyse veya hiç sinyal yoksa kontrol et
-            if not last_signal_time or current_time - last_signal_time > timedelta(minutes=15):
+            if not last_signal_time or current_time - last_signal_time > timedelta(minutes=40):
                 if rows and rows[0].ca_buySignal and rows[0].longTrend:
                     long_condition_true_in_last_4 = any(row.long_condition for row in rows)
                     if long_condition_true_in_last_4:
