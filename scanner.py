@@ -6,6 +6,11 @@ from telegram import send_message
 from datetime import datetime, timedelta
 import logging
 import time
+
+# Logging konfigürasyonu
+logging.basicConfig(filename='crypto_scan.log', level=logging.ERROR, 
+                    format='%(asctime)s:%(levelname)s:%(message)s')
+
 # Her coin için son sinyal zamanını saklayacak sözlük
 last_signal_times = {}
 
